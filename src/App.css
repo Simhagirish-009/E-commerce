@@ -1,0 +1,224 @@
+/* Theme Variables - Yellow, White, and Blue */
+:root {
+  --primary-bg: #f8fafc;       /* soft white/gray */
+  --secondary-bg: #1e40af;     /* deep blue (Royal) */
+  --accent-color: #facc15;     /* vibrant yellow */
+  --text-dark: #1e293b;        /* slate for readability on white */
+  --text-light: #ffffff;       /* white for blue backgrounds */
+  --card-bg: #eaeaea;          /* clean white cards */
+  --border-color: #e2e8f0;     /* light gray borders */
+}
+
+/* Body Layout */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--primary-bg);
+  color: var(--text-dark);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar */
+.navbar-custom {
+  background-color: var(--secondary-bg);
+  padding: 12px 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+  color: var(--text-light) !important;
+}
+
+.navbar-custom .nav-link:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Main Content */
+.main-content {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Card Styling */
+.welcome-card,.dashboard-card, .generate-card, .result-card, .analytics-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 700px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  color: var(--text-dark);
+}
+
+.input{
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.auth-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 40px;
+  /* width: 50%; */
+  max-width: 700px;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  color: var(--text-dark);
+}
+
+/* Button - The Yellow "Pop" */
+.btn-theme {
+  background-color: var(--accent-color);
+  color: #1e293b; /* dark text for contrast on yellow */
+  border: none;
+  font-weight: 600;
+  padding: 10px 20px;
+  transition: all 0.2s;
+}
+
+.btn-theme:hover {
+  background-color: #facc15; /* darker yellow */
+  transform: translateY(-1px);
+}
+
+/* Footer */
+.footer {
+  background-color: var(--secondary-bg);
+  color: var(--text-light);
+  text-align: center;
+  padding: 15px;
+}
+
+/* Auth Page Layout - Blue Gradient */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    #facc15,
+    #fbf471,
+    #eff6ff
+  );
+}
+
+/* Inputs */
+.form-control {
+  background-color: #ffffff;
+  color: var(--text-dark);
+  border: 1px solid var(--border-color);
+}
+
+.form-control:focus {
+  border-color: var(--secondary-bg);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+}
+
+/* Links */
+.auth-links a {
+  color: var(--secondary-bg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+/* Dashboard Specifics */
+.dashboard-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(30, 64, 175, 0.1);
+}
+
+.generated-output {
+  background-color: #f1f5f9;
+  border: 1px solid var(--border-color);
+  color: var(--text-dark);
+}
+
+/* Apply your theme variables */
+.navbar-custom {
+  background-color: var(--secondary-bg) !important; /* Deep Royal Blue */
+  border-bottom: 3px solid var(--accent-color);    /* Yellow Bottom Border */
+}
+
+/* Brand styling */
+.brand-text {
+  color: var(--text-light);
+  letter-spacing: 0.5px;
+}
+
+.accent-icon {
+  color: var(--accent-color); /* Vibrant Yellow Icon */
+}
+
+/* Nav Links Styling */
+.nav-item-custom {
+  color: var(--text-light) !important;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1.2rem !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-item-custom:hover {
+  color: var(--accent-color) !important; /* Yellow hover */
+}
+
+/* Cart & Action Icons */
+.cart-icon, .profile-trigger {
+  color: var(--text-light) !important;
+}
+
+.cart-icon:hover, .profile-trigger:hover {
+  color: var(--accent-color) !important;
+}
+
+.cart-badge {
+  background-color: var(--accent-color) !important;
+  color: var(--secondary-bg) !important; /* Blue text on yellow badge */
+  font-weight: bold;
+}
+
+/* Dropdown Customization */
+.custom-dropdown .dropdown-menu {
+  background-color: var(--primary-bg); /* Soft White/Gray menu */
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-label {
+  color: var(--text-dark);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.logout-item {
+  color: #dc3545 !important; /* Standard red for logout */
+}
+
+/* Toggler Color */
+.custom-toggler.navbar-toggler {
+  border-color: var(--accent-color);
+  background-color: var(--accent-color);
+}
+
+.search-bar input {
+  border-radius: 20px;
+  padding-left: 15px;
+}
+
+.search-bar button {
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+}

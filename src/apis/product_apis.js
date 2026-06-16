@@ -1,0 +1,71 @@
+import axios from "axios";
+
+const API_URL = "http://127.0.0.1:8000/api";
+
+export const getCustomerData = async () => {
+  return await axios.get(`${API_URL}/is-complete/`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  });
+};
+
+export const getProductsByCategory = () => {
+  return axios.get(`${API_URL}/products-by-category/`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  });
+};
+
+/* ADD TO CART */
+export const addToCart = (product_id, quantity = 1) => {
+  return axios.post(
+    `${API_URL}/cart/add/`,
+    {
+      product_id,
+      quantity,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    },
+  );
+};
+
+/* BUY PRODUCT */
+export const buyProduct = (product_id, quantity = 1,address) => {
+  return axios.post(
+    `${API_URL}/buy/`,
+    {
+      product_id,
+      quantity,
+      address
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    },
+  );
+};
+
+export const makePayment = (order_id, payment_mode) => {
+  return axios.post(`${API_URL}/payment/`, {
+    order_id,
+    payment_mode,
+  }, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  });
+};
+
+export const getOrders = () => {
+  return axios.get(`${API_URL}/orders/`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  });
+}
