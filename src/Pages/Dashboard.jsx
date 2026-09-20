@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { getCustomerData } from "../apis/product_apis";
 import { Modal, Button } from "react-bootstrap";
 import Products from "./Products";
-import axiosInstance from "../apis/axiosInstance";
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);

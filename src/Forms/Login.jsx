@@ -29,23 +29,27 @@ const Login = () => {
     try {
       const data = { email, password };
       const response = await login(data);
-      
+
       console.log("Login response:", response.data); // Debugging log
       localStorage.clear(); // Clear any previous data
-      localStorage.setItem("user", JSON.stringify(response.data.user.id)); 
-      toast.success(response.data.message || "Login successful! Please verify OTP."); // Show success toast
+      localStorage.setItem("user", JSON.stringify(response.data.user.id));
+      toast.success(
+        response.data.message || "Login successful! Please verify OTP.",
+      ); // Show success toast
       setLoading(false);
 
       setTimeout(() => {
-        navigate("/otp-verify"); 
-      }, 2000); 
-
+        navigate("/otp-verify");
+      }, 2000);
     } catch (err) {
       setLoading(false);
-      setError(
-        err.response?.data?.message ||
-          "An error occurred during login. Please try again."
-      );
+      const errData = err.response.data;
+      const message =
+        errData?.non_field_errors?.[0] ||
+        errData?.message ||
+        (errData && Object.values(errData).flat()[0]) ||
+        "An error occurred during login. Please try again.";
+      setError(message);
     }
 
   };

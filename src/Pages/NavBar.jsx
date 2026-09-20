@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { getCustomerData } from "../apis/product_apis";
+
 import {
   Navbar,
   Nav,
@@ -7,6 +9,7 @@ import {
   Badge,
   Form,
   Button,
+  Modal,
   FormControl,
 } from "react-bootstrap";
 import {
@@ -27,6 +30,8 @@ import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const [search, setSearch] = useState("");
+    const [showModal, setShowModal] = useState(false);
+  
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
@@ -57,6 +62,22 @@ const NavBar = () => {
 
     fetchCart();
   }, []);
+  useEffect(() => {
+    const fetchCustomerData = async () => {
+      try {
+        const response = await getCustomerData();
+        const complete = response.data.is_complete;
+
+        if (!complete) {
+          setShowModal(true);
+        }
+      } catch (error) {
+        console.error("Error fetching customer data:", error);
+      }
+    };
+
+    fetchCustomerData();
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -72,6 +93,24 @@ const NavBar = () => {
   };
   return (
     <Navbar expand="lg" className="navbar-custom shadow-sm py-2" sticky="top">
+      <Modal show={showModal} backdrop="static" keyboard={false} centered>
+        <Modal.Header>
+          <Modal.Title>Complete Your Profile</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          Please complete your profile to continue using the dashboard.
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => (window.location.href = "/complete-profile")}
+          >
+            Go to Profile
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Container>
         {/* Brand */}
         <Navbar.Brand href="/" className="brand-logo d-flex align-items-center">
@@ -149,7 +188,7 @@ const NavBar = () => {
 
               <NavDropdown.Divider />
 
-              <NavDropdown.Item href="/logout" onClick={handleLogout}>
+              <NavDropdown.Item onClick={handleLogout}>
                 <LogOut size={16} className="me-2" /> Logout
               </NavDropdown.Item>
             </NavDropdown>

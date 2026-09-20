@@ -88,7 +88,8 @@ const Otp = () => {
 
       setTimeout(() => {
         navigate(isAdmin ? "/admin-dashboard" : "/");
-      }, 1500);
+      }, 2000);
+      
     } catch (err) {
       const errorMsg =
         err.response?.data?.message || "Invalid OTP. Please try again.";

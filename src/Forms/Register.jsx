@@ -3,6 +3,8 @@ import { Card, Form, Button, Alert, Spinner, Row, Col } from "react-bootstrap";
 import {Image} from "react-bootstrap";
 import register from  "../assets/register.jpg";
 import "../App.css";
+import { useNavigate } from "react-router-dom";
+
 import { register as registerUser } from "../apis/form_apis";
 import {toast , ToastContainer } from "react-toastify"; // Import Toastify
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
@@ -13,6 +15,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -49,8 +52,9 @@ const Register = () => {
         response.data.message || "Registration successful! Please login.",
       ); // Show success toast
       setTimeout(() => {
-        navigate("/verify_otp");
+        navigate("/login");
       }, 2000);
+
     } catch (err) {
       setLoading(false);
       setError(
