@@ -15,11 +15,11 @@ import {
   Package,
   LayoutGrid,
   LogOut,
-  Settings,
   ShoppingBag,
   Search,
+  Bell,
 } from "lucide-react";
-import axios from "axios";
+import axiosInstance from "../apis/axiosInstance";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
@@ -39,7 +39,7 @@ const NavBar = () => {
       }
 
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           "http://localhost:8000/api/count-cart/",
           {
             headers: {
@@ -50,6 +50,7 @@ const NavBar = () => {
 
         setCartCount(response.data.cart_count);
       } catch (err) {
+        setError("Failed to fetch cart count");
         console.error(err);
       }
     };
@@ -93,6 +94,10 @@ const NavBar = () => {
 
             <Nav.Link href="/paymenthistory" className="nav-item-custom">
               <Package size={18} className="me-2" /> Payment History
+            </Nav.Link>
+
+            <Nav.Link href="/notifications" className="nav-item-custom">
+              <Bell size={18} className="me-2" /> Notifications
             </Nav.Link>
           </Nav>
 
@@ -140,10 +145,6 @@ const NavBar = () => {
 
               <NavDropdown.Item href="/update-profile">
                 <User size={16} className="me-2" /> My Profile
-              </NavDropdown.Item>
-
-              <NavDropdown.Item href="/settings">
-                <Settings size={16} className="me-2" /> Settings
               </NavDropdown.Item>
 
               <NavDropdown.Divider />

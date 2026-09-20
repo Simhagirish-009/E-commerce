@@ -14,6 +14,7 @@ import axios from "axios";
 import { addToCart } from "../apis/product_apis";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axiosInstance from "../apis/axiosInstance";
 
 const SearchResults = () => {
   const [productsByCategory, setProductsByCategory] = useState({});

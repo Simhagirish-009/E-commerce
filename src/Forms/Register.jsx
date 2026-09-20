@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Card, Form, Button, Alert, Spinner, Row, Col } from "react-bootstrap";
 import {Image} from "react-bootstrap";
-import axios from "axios";
 import register from  "../assets/register.jpg";
 import "../App.css";
 import { register as registerUser } from "../apis/form_apis";
@@ -26,6 +25,10 @@ const Register = () => {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
+      return;
+    }
+    if(password.length < 8){
+      setError("Password must be at least 8 characters long");
       return;
     }
 

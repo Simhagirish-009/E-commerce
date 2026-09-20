@@ -60,8 +60,6 @@ const Otp = () => {
     e.preventDefault();
 
     const userId = user ? Number(user) : null;
-
-    // Join the array [ "1", "2", "3"..."6" ] into "123456"
     const otpCode = otp.join("");
 
     if (otpCode.length < 6) {
@@ -70,26 +68,27 @@ const Otp = () => {
     }
 
     setLoading(true);
-    setMessage(""); // Clear previous errors
+    setMessage("");
 
     try {
-
       const response = await otp_verify({
         otp: otpCode,
-        user : userId, // Assuming the backend needs the user ID to verify OTP
+        user: userId,
       });
 
       // Store the tokens received from the backend
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
 
+      const isAdmin = response.data.is_admin;
+      localStorage.setItem("is_admin", JSON.stringify(isAdmin));
+
       toast.success("Verification successful!");
       setLoading(false);
 
       setTimeout(() => {
-        navigate("/"); // Or your home route
+        navigate(isAdmin ? "/admin-dashboard" : "/");
       }, 1500);
-      
     } catch (err) {
       const errorMsg =
         err.response?.data?.message || "Invalid OTP. Please try again.";
@@ -152,12 +151,11 @@ const Otp = () => {
             <br />
             {message && <Alert variant="danger">{message}</Alert>}
             {seconds === 0 && (
-              // <<<<<<< HEAD
               <div className="btnn">
                 <Button
                   className="btn-theme px-5"
                   
-                  // onClick={handleResendOtp}
+                  
                   disabled={resending}
                 >
                   {resending ? (

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card, Button, Form } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { makePayment, buyProduct } from "../apis/product_apis";
+import axiosInstance from "../apis/axiosInstance";
 
 const API_URL = "http://localhost:8000/api";
 
@@ -36,7 +36,7 @@ const Checkout = () => {
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-        const res = await axios.get(`${API_URL}/customer/address/`, {
+        const res = await axiosInstance.get(`${API_URL}/customer/address/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAddress(res.data);
@@ -49,9 +49,7 @@ const Checkout = () => {
   }, [token]);
 
   // FORMAT ADDRESSES
-  const address1 = address
-    ? `${address.address_line1}`
-    : "";
+  const address1 = address ? `${address.address_line1}` : "";
 
   const address2 =
     address && address.address_line2?.trim()
@@ -92,7 +90,7 @@ const Checkout = () => {
       }
 
       if (isCartCheckout) {
-        await axios.post(
+        await axiosInstance.post(
           `${API_URL}/cart/buy-all/`,
           { address: selectedAddressData },
           {

@@ -29,6 +29,7 @@ const Login = () => {
     try {
       const data = { email, password };
       const response = await login(data);
+      
       console.log("Login response:", response.data); // Debugging log
       localStorage.clear(); // Clear any previous data
       localStorage.setItem("user", JSON.stringify(response.data.user.id)); 

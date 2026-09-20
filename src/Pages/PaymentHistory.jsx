@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table, Spinner, Alert, Badge } from "react-bootstrap";
 import axios from "axios";
+import axiosInstance from "../apis/axiosInstance";
 
 const PaymentHistory = () => {
   const [payments, setPayments] = useState([]);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Form, Button, Card, Spinner, Alert } from "react-bootstrap";
 import axios from "axios";
+import axiosInstance from "../apis/axiosInstance";
 
 const Update = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const Update = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://127.0.0.1:8000/api/customer/me/", {
+        const res = await axiosInstance.get("http://127.0.0.1:8000/api/customer/me/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -35,7 +36,7 @@ const Update = () => {
         setFormData(res.data);
 
         // Optional: fetch states from backend
-        const statesRes = await axios.get("http://127.0.0.1:8000/api/states/");
+        const statesRes = await axiosInstance.get("http://127.0.0.1:8000/api/states/");
         setStates(statesRes.data.states);
 
         setLoading(false);
@@ -62,7 +63,7 @@ const Update = () => {
     setSuccess("");
 
     try {
-      await axios.put("http://127.0.0.1:8000/api/customer/update/", formData, {
+      await axiosInstance.put("http://127.0.0.1:8000/api/customer/update/", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

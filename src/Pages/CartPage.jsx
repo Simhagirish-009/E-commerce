@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Spinner,
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import axiosInstance from "../apis/axiosInstance";
+
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,7 +21,7 @@ const CartPage = () => {
   // ✅ Fetch Cart
   const fetchCart = async () => {
     try {
-      const res = await axios.get(`${API_URL}/cart/`, {
+      const res = await axiosInstance.get(`${API_URL}/cart/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -44,7 +39,7 @@ const CartPage = () => {
   // ✅ Remove Item
   const removeItem = async (id) => {
     try {
-      await axios.delete(`${API_URL}/cart/remove/${id}/`, {
+      await axiosInstance.delete(`${API_URL}/cart/remove/${id}/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -84,7 +79,7 @@ const CartPage = () => {
     if (newQty < 1) return;
 
     try {
-      await axios.patch(
+      await axiosInstance.patch(
         `${API_URL}/cart/update/${id}/`,
         { quantity: newQty },
         {
@@ -108,9 +103,8 @@ const CartPage = () => {
 
   // ✅ Total Price Calculation
   const totalPrice = cartItems.reduce(
-    (acc, item) =>
-      acc + item.quantity * Number(item.product.discounted_price),
-    0
+    (acc, item) => acc + item.quantity * Number(item.product.discounted_price),
+    0,
   );
 
   if (loading) {

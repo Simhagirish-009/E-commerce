@@ -1,9 +1,8 @@
-import axios from "axios";
-
+import axiosInstance from "../apis/axiosInstance";
 const API_URL = "http://127.0.0.1:8000/api";
 
 export const getCustomerData = async () => {
-  return await axios.get(`${API_URL}/is-complete/`, {
+  return await axiosInstance.get(`${API_URL}/is-complete/`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
@@ -11,7 +10,7 @@ export const getCustomerData = async () => {
 };
 
 export const getProductsByCategory = () => {
-  return axios.get(`${API_URL}/products-by-category/`, {
+  return axiosInstance.get(`${API_URL}/products-by-category/`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
@@ -20,7 +19,7 @@ export const getProductsByCategory = () => {
 
 /* ADD TO CART */
 export const addToCart = (product_id, quantity = 1) => {
-  return axios.post(
+  return axiosInstance.post(
     `${API_URL}/cart/add/`,
     {
       product_id,
@@ -36,7 +35,7 @@ export const addToCart = (product_id, quantity = 1) => {
 
 /* BUY PRODUCT */
 export const buyProduct = (product_id, quantity = 1,address) => {
-  return axios.post(
+  return axiosInstance.post(
     `${API_URL}/buy/`,
     {
       product_id,
@@ -52,7 +51,7 @@ export const buyProduct = (product_id, quantity = 1,address) => {
 };
 
 export const makePayment = (order_id, payment_mode) => {
-  return axios.post(`${API_URL}/payment/`, {
+  return axiosInstance.post(`${API_URL}/payment/`, {
     order_id,
     payment_mode,
   }, {
@@ -63,7 +62,7 @@ export const makePayment = (order_id, payment_mode) => {
 };
 
 export const getOrders = () => {
-  return axios.get(`${API_URL}/orders/`, {
+  return axiosInstance.get(`${API_URL}/orders/`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
