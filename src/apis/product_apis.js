@@ -1,5 +1,5 @@
 import axiosInstance from "../apis/axiosInstance";
-const API_URL = "https://e-commerce-zhu2.onrender.com/";
+const API_URL = "https://e-commerce-zhu2.onrender.com";
 
 export const getCustomerData = async () => {
   return await axiosInstance.get(`${API_URL}/is-complete/`, {
