@@ -8,6 +8,29 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from django.core.mail import send_mail
 
+import requests
+from django.conf import settings
+ 
+ 
+def _send_via_resend(to_email, subject, message):
+    """Shared helper: sends a plain-text email via Resend's HTTP API."""
+    response = requests.post(
+        "https://api.resend.com/emails",
+        headers={
+            "Authorization": f"Bearer {settings.RESEND_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "from": settings.EMAIL_FROM_ADDRESS,
+            "to": [to_email],
+            "subject": subject,
+            "text": message,
+        },
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()
+
 class AdminAllOrdersView(APIView):
     permission_classes = [IsAdminUser]
 
@@ -75,13 +98,7 @@ class AdminUpdateOrderStatusView(APIView):
         )
 
         try:
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [customer_email],
-                fail_silently=False,
-            )
+            _send_via_resend(customer_email, subject, message)
         except Exception as e:
             print(f"Failed to send delivery email for order {order.id}: {e}")
             return  # don't log a notification for an email that failed to send

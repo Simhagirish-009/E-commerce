@@ -12,20 +12,18 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from .views import _send_via_resend
 
 # generating OTP code 
 def generate_otp():
     return random.randint(100000, 999999)
 
-# Function to send OTP email
 def send_otp_email(email, otp):
     try:
-        send_mail(
+        _send_via_resend(
+            email,
             'Your OTP for Login',
             f'Your OTP is: {otp}',
-            'admin@myapp.com',
-            [email],
-            fail_silently=False,
         )
     except Exception as e:
         print(f"Error sending OTP email: {e}")
