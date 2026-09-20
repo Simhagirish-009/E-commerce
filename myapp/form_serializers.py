@@ -82,21 +82,40 @@ class CompleteProfileSerializer(serializers.ModelSerializer):
             'zip_code'
         ]
 
-class OtpSerializer(serializers.ModelSerializer):
+# class OtpSerializer(serializers.ModelSerializer):
 
+#     class Meta:
+#         model = Otp
+#         fields = ['user', 'otp']
+
+#     def validate(self, data):
+#         user = data.get('user')
+#         otp = data.get('otp')
+
+#         otp_obj = Otp.objects.filter(user=user, otp=otp).first()
+#         if not otp_obj:
+#             raise serializers.ValidationError("Invalid OTP.")
+#         if not otp_obj.is_valid():
+#             raise serializers.ValidationError("OTP has expired.")
+
+#         data['otp_obj'] = otp_obj
+#         return data
+
+class OtpSerializer(serializers.ModelSerializer):
     class Meta:
         model = Otp
         fields = ['user', 'otp']
 
     def validate(self, data):
         user = data.get('user')
-        print(f'the user id : {user}')
-        cleaned_user_id = str(user.id).strip('/')  # Remove quotes if present
         otp = data.get('otp')
 
-        if not Otp.objects.filter(user_id=cleaned_user_id, otp=otp).exists():
+        otp_obj = Otp.objects.filter(user=user, otp=otp).first()
+        if not otp_obj:
             raise serializers.ValidationError("Invalid OTP.")
-        
+        if not otp_obj.is_valid():
+            raise serializers.ValidationError("OTP has expired. Please request a new one.")
+
         return data
     
 class CustomerSerializer(serializers.ModelSerializer):

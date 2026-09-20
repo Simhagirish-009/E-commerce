@@ -34,7 +34,7 @@ class Customer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     user_name = models.CharField(max_length=100)
     email = models.EmailField()
-    phone_number = models.CharField(max_length=10, validators=[validate_phone_number])
+    phone_number = models.CharField(max_length=10,unique=True, validators=[validate_phone_number])
     address_line1 = models.CharField(max_length=255)
     address_line2 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100)
@@ -93,6 +93,9 @@ class OrderPlaced(models.Model):
     ordered_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pending')
     destination = models.TextField()
+    received_confirmed = models.BooleanField(default=False)
+    received_confirmed_at = models.DateTimeField(null=True, blank=True)
+ 
 
     @property
     def total_cost(self):
@@ -130,3 +133,37 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment for Order {self.order.id}"
+
+from django.conf import settings
+from django.db import models
+
+
+class Notification(models.Model):
+    NOTIFICATION_TYPES = (
+        ("order_delivered", "Order Delivered"),
+    )
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="notifications",
+    )
+    order = models.ForeignKey(
+        "OrderPlaced",  # adjust app label if it lives in another app, e.g. "orders.OrderPlaced"
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="notifications",
+    )
+    notification_type = models.CharField(
+        max_length=50, choices=NOTIFICATION_TYPES, default="order_delivered"
+    )
+    message = models.CharField(max_length=255)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user} · {self.notification_type} · Order #{self.order_id}"

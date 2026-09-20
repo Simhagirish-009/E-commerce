@@ -84,7 +84,7 @@ class RemoveCartItemView(APIView):
 
     def delete(self, request, pk):
 
-        cart_item = Cart.objects.get(id=pk, user=request.user)
+        cart_item = get_object_or_404(Cart, id=pk, user=request.user)
         cart_item.delete()
 
         return Response({"message": "Item removed from cart"})
@@ -264,7 +264,7 @@ def search_products(request):
 
 
 @api_view(["GET"])
-def get_customer(request):
+def get_customer_profile(request):
     customer = get_object_or_404(Customer, user=request.user)
     serializer = ViewCustomerSerializer(customer)
     return Response(serializer.data)

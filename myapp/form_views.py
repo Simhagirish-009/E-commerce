@@ -41,10 +41,10 @@ def login(request):
     
     user = serializer.validated_data['user']
     email = user.email
-    try:
-        customer = Customer.objects.get(user=user)
-    except Customer.DoesNotExist:
-        return Response({"error": "Customer profile not found."}, status=status.HTTP_404_NOT_FOUND)
+    # try:
+    #     customer = Customer.objects.get(user=user)
+    # except Customer.DoesNotExist:
+    #     return Response({"error": "Customer profile not found."}, status=status.HTTP_404_NOT_FOUND)
     otp = generate_otp()
 
     Otp.objects.filter(user=user).delete()
@@ -62,18 +62,42 @@ def login(request):
     }, status=status.HTTP_200_OK)
 
 # View to verify OTP and generate JWT tokens
+# class VerifyOtpView(APIView):
+#     permission_classes = [AllowAny]
+
+#     serializer_class = OtpSerializer
+#     def post(self,request):
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+
+#             refresh_token = RefreshToken.for_user(serializer.validated_data['user'])
+#             return Response({
+#                 'refresh': str(refresh_token),
+#                 'access': str(refresh_token.access_token),
+#             }, status=status.HTTP_200_OK)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class VerifyOtpView(APIView):
     permission_classes = [AllowAny]
 
     serializer_class = OtpSerializer
-    def post(self,request):
+    def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
+            user = serializer.validated_data['user']
 
-            refresh_token = RefreshToken.for_user(serializer.validated_data['user'])
+            refresh_token = RefreshToken.for_user(user)
+            is_admin = user.is_staff or user.is_superuser
+
             return Response({
                 'refresh': str(refresh_token),
                 'access': str(refresh_token.access_token),
+                'is_admin': is_admin,
+                'user': {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                },
             }, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -180,10 +204,9 @@ def update_customer(request):
     )
 
     if serializer.is_valid():
-        if serializer.is_valid():
-            serializer.save()
-            request.user.email = serializer.validated_data.get("email", request.user.email)
-            request.user.save()
+        serializer.save()
+        request.user.email = serializer.validated_data.get("email", request.user.email)
+        request.user.save()
         return Response(
             {"message": "Profile updated successfully", "data": serializer.data}
         )
