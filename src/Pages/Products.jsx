@@ -24,6 +24,9 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
+  const API_BASE = "https://e-commerce-zhu2.onrender.com/api";
+  const MEDIA_BASE = API_BASE.replace(/\/api\/?$/, "");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -216,7 +219,7 @@ const Products = () => {
 
                             <Card.Img
                               variant="top"
-                              src={`http://localhost:8000${product.product_image}`}
+                              src={`${MEDIA_BASE}${product.product_image}`}
                               style={{
                                 height: "150px",
                                 objectFit: "contain",

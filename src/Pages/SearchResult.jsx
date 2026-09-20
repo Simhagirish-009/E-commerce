@@ -19,6 +19,8 @@ import axiosInstance from "../apis/axiosInstance";
 const SearchResults = () => {
   const [productsByCategory, setProductsByCategory] = useState({});
   const [loading, setLoading] = useState(true);
+  const API_BASE = "https://e-commerce-zhu2.onrender.com/api";
+  const MEDIA_BASE = API_BASE.replace(/\/api\/?$/, "");
 
   const carouselRefs = useRef({});
   const navigate = useNavigate();
@@ -223,7 +225,7 @@ const SearchResults = () => {
                             {/* Image */}
                             <Card.Img
                               variant="top"
-                              src={`http://localhost:8000${product.product_image}`}
+                              src={`${MEDIA_BASE}${product.product_image}`}
                               style={{
                                 height: "150px",
                                 objectFit: "contain",
