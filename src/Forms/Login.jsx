@@ -8,7 +8,7 @@ import {
   Spinner,
   FloatingLabel,
 } from "react-bootstrap";
-import {login} from "../apis/form_apis";
+import { login } from "../apis/form_apis";
 import { Row, Col, Image } from "react-bootstrap";
 import register from "../assets/register.jpg";
 import { toast, ToastContainer } from "react-toastify"; // Import Toastify
@@ -33,14 +33,20 @@ const Login = () => {
       console.log("Login response:", response.data); // Debugging log
       localStorage.clear(); // Clear any previous data
       localStorage.setItem("user", JSON.stringify(response.data.user.id));
-      toast.success(
-        response.data.message || "Login successful! Please verify OTP.",
-      ); // Show success toast
+      // Store the tokens received from the backend
+      localStorage.setItem("access_token", response.data.access);
+      localStorage.setItem("refresh_token", response.data.refresh);
+
+      const isAdmin = response.data.is_admin;
+      localStorage.setItem("is_admin", JSON.stringify(isAdmin));
+
+      toast.success("Verification successful!");
       setLoading(false);
 
       setTimeout(() => {
-        navigate("/otp-verify");
+        navigate(isAdmin ? "/admin-dashboard" : "/");
       }, 2000);
+      
     } catch (err) {
       setLoading(false);
       const errData = err.response.data;
@@ -51,7 +57,6 @@ const Login = () => {
         "An error occurred during login. Please try again.";
       setError(message);
     }
-
   };
 
   return (
