@@ -60,7 +60,7 @@ class PartialRegisterSerializer(serializers.ModelSerializer):
             user=user,
             user_name=user.username,
             email=user.email,
-            phone_number="0000000000",
+            # phone_number="0000000000",
             address_line1="xxxxx",
             city="xxxxx",
             state="xxxxx",

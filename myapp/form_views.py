@@ -107,22 +107,22 @@ class PartialRegisterView(APIView):
     def post(self, request):
         serializer = PartialRegisterSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
-            email = user.email
-            try:
-                customer = Customer.objects.get(user=user)
-            except Customer.DoesNotExist:
-                return Response({"error": "Customer profile not found."}, status=status.HTTP_404_NOT_FOUND)
-            otp = generate_otp()
+            serializer.save()
+            # email = user.email
+            # try:
+            #     customer = Customer.objects.get(user=user)
+            # except Customer.DoesNotExist:
+            #     return Response({"error": "Customer profile not found."}, status=status.HTTP_404_NOT_FOUND)
+            # otp = generate_otp()
 
-            otp = generate_otp()
-            Otp.objects.filter(user=user).delete()
-            otp_instance = Otp.objects.create(user=user, otp=otp)
-            otp_instance.save()
-            send_otp_email(email, otp)
+            # otp = generate_otp()
+            # Otp.objects.filter(user=user).delete()
+            # otp_instance = Otp.objects.create(user=user, otp=otp)
+            # otp_instance.save()
+            # send_otp_email(email, otp)
 
             return Response(
-                {"message": "OTP sent to email successfully."},
+                {"message": "Registered successfully."},
                 status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -34,7 +34,7 @@ class Customer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     user_name = models.CharField(max_length=100)
     email = models.EmailField()
-    phone_number = models.CharField(max_length=10,unique=True, validators=[validate_phone_number])
+    phone_number = models.CharField(max_length=10,unique=True,blank=True, validators=[validate_phone_number])
     address_line1 = models.CharField(max_length=255)
     address_line2 = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=100)
