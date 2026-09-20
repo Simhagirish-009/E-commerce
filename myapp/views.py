@@ -6,30 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from django.core.mail import send_mail
-
-import requests
-from django.conf import settings
  
- 
-def _send_via_resend(to_email, subject, message):
-    """Shared helper: sends a plain-text email via Resend's HTTP API."""
-    response = requests.post(
-        "https://api.resend.com/emails",
-        headers={
-            "Authorization": f"Bearer {settings.RESEND_API_KEY}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "from": settings.EMAIL_FROM_ADDRESS,
-            "to": [to_email],
-            "subject": subject,
-            "text": message,
-        },
-        timeout=10,
-    )
-    response.raise_for_status()
-    return response.json()
 
 class AdminAllOrdersView(APIView):
     permission_classes = [IsAdminUser]
@@ -86,28 +63,12 @@ class AdminUpdateOrderStatusView(APIView):
         customer_email = order.user.email
         if not customer_email:
             return
-
-        subject = f"Your order #{order.id} has been delivered!"
-        message = (
-            f"Hi {order.user.first_name or order.user.username},\n\n"
-            f"Your order #{order.id} for \"{order.product.title}\" "
-            f"(qty: {order.quantity}) has been delivered. "
-            f"We hope you enjoy it!\n\n"
-            f"Total: ₹{order.total_cost}\n\n"
-            f"Thanks for shopping with us."
-        )
-
-        try:
-            _send_via_resend(customer_email, subject, message)
-        except Exception as e:
-            print(f"Failed to send delivery email for order {order.id}: {e}")
-            return  # don't log a notification for an email that failed to send
-
+        
         Notification.objects.create(
             user=order.user,
             order=order,
             notification_type="order_delivered",
-            message=f"Your order #{order.id} ({order.product.title}) has been delivered.",
+            message=f"Your order #{order.id} ({order.product.title}) has been delivered.Please mark it as received in your account.",
         )
 
 

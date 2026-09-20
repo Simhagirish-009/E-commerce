@@ -12,18 +12,21 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from .views import _send_via_resend
+# from .views import _send_via_resend
 
 # generating OTP code 
 def generate_otp():
     return random.randint(100000, 999999)
 
+# Function to send OTP email
 def send_otp_email(email, otp):
     try:
-        _send_via_resend(
-            email,
+        send_mail(
             'Your OTP for Login',
             f'Your OTP is: {otp}',
+            'admin@myapp.com',
+            [email],
+            fail_silently=False,
         )
     except Exception as e:
         print(f"Error sending OTP email: {e}")
@@ -39,41 +42,21 @@ def login(request):
     
     user = serializer.validated_data['user']
     email = user.email
-    # try:
-    #     customer = Customer.objects.get(user=user)
-    # except Customer.DoesNotExist:
-    #     return Response({"error": "Customer profile not found."}, status=status.HTTP_404_NOT_FOUND)
-    otp = generate_otp()
 
-    Otp.objects.filter(user=user).delete()
-    otp_instance = Otp.objects.create(user=user, otp=otp)
-    otp_instance.save()
-
-    send_otp_email(email, otp)
+    refresh_token = RefreshToken.for_user(user)
+    is_admin = user.is_staff or user.is_superuser
 
     return Response({
-        'message': 'OTP sent to email successfully.',
-            'user': {
-                'id': user.id,
-            }
-        
+        'refresh': str(refresh_token),
+        'access': str(refresh_token.access_token),
+        'is_admin': is_admin,
+        'user': {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+        },
     }, status=status.HTTP_200_OK)
-
-# View to verify OTP and generate JWT tokens
-# class VerifyOtpView(APIView):
-#     permission_classes = [AllowAny]
-
-#     serializer_class = OtpSerializer
-#     def post(self,request):
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-
-#             refresh_token = RefreshToken.for_user(serializer.validated_data['user'])
-#             return Response({
-#                 'refresh': str(refresh_token),
-#                 'access': str(refresh_token.access_token),
-#             }, status=status.HTTP_200_OK)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
 class VerifyOtpView(APIView):
     permission_classes = [AllowAny]
