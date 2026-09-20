@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import "../App.css";
 import axiosInstance from "../apis/axiosInstance";
 
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "https://e-commerce-zhu2.onrender.com/api";
 const MEDIA_BASE = API_BASE.replace(/\/api\/?$/, "");
 
 const authHeaders = () => ({

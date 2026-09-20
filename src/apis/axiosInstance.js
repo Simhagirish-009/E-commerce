@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "https://e-commerce-zhu2.onrender.com/api",
 });
 
 // Attach the token automatically on every request.

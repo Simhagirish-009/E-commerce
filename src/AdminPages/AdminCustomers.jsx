@@ -14,7 +14,7 @@ import axios from "axios";
 import "../App.css";
 import axiosInstance from "../apis/axiosInstance";
 
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "https://e-commerce-zhu2.onrender.com/api";
 
 const authHeaders = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },

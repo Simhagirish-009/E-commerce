@@ -14,7 +14,7 @@ const PaymentHistory = () => {
         const token = localStorage.getItem("access_token");
 
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/payment-history/",
+          "http://e-commerce-zhu2.onrender.com/api/payment-history/",
           {
             headers: {
               Authorization: `Bearer ${token}`,

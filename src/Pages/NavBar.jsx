@@ -45,7 +45,7 @@ const NavBar = () => {
 
       try {
         const response = await axiosInstance.get(
-          "http://localhost:8000/api/count-cart/",
+          "https://e-commerce-zhu2.onrender.com/api/count-cart/",
           {
             headers: {
               Authorization: `Bearer ${access_token}`,

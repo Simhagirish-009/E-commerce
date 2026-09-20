@@ -12,7 +12,7 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  const API_URL = "http://localhost:8000/api";
+  const API_URL = "https://e-commerce-zhu2.onrender.com/api";
 
   useEffect(() => {
     fetchCart();

@@ -31,7 +31,7 @@ const SearchResults = () => {
     const fetchResults = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/search/?q=${query}`,
+          `https://e-commerce-zhu2.onrender.com/api/search/?q=${query}`,
         );
 
         // ✅ Group like Products page

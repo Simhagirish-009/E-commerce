@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { makePayment, buyProduct } from "../apis/product_apis";
 import axiosInstance from "../apis/axiosInstance";
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = "https://e-commerce-zhu2.onrender.com/api";
 
 const Checkout = () => {
   const location = useLocation();

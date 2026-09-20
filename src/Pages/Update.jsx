@@ -27,16 +27,21 @@ const Update = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axiosInstance.get("http://127.0.0.1:8000/api/customer/me/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const res = await axiosInstance.get(
+          "http://e-commerce-zhu2.onrender.com/api/customer/me/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
 
         setFormData(res.data);
 
         // Optional: fetch states from backend
-        const statesRes = await axiosInstance.get("http://127.0.0.1:8000/api/states/");
+        const statesRes = await axiosInstance.get(
+          "http://e-commerce-zhu2.onrender.com/api/states/",
+        );
         setStates(statesRes.data.states);
 
         setLoading(false);
@@ -63,11 +68,15 @@ const Update = () => {
     setSuccess("");
 
     try {
-      await axiosInstance.put("http://127.0.0.1:8000/api/customer/update/", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      await axiosInstance.put(
+        "http://e-commerce-zhu2.onrender.com/api/customer/update/",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       setSuccess("Profile updated successfully!");
     } catch (err) {

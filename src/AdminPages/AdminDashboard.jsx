@@ -15,7 +15,7 @@ import "../App.css";
 
 // Base URL for API calls — adjust to match your existing apis/ config if you
 // centralize it elsewhere (e.g. apis/axiosInstance.js).
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "https://e-commerce-zhu2.onrender.com/api";
 
 const authHeaders = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
