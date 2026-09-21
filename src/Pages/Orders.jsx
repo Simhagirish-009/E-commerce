@@ -14,6 +14,7 @@ import { getOrders } from "../apis/product_apis";
 import axiosInstance from "../apis/axiosInstance";
 
 const API_BASE = "https://e-commerce-zhu2.onrender.com/api";
+const MEDIA_BASE = API_BASE.replace(/\/api\/?$/, "");
 
 const authHeaders = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` },
@@ -102,7 +103,7 @@ const Orders = () => {
                 <Card className="shadow-sm h-100">
                   <Card.Img
                     variant="top"
-                    src={`http://localhost:8000${order.product.product_image}`}
+                    src={`${MEDIA_BASE}${order.product.product_image}`}
                     style={{ height: "200px", objectFit: "contain" }}
                   />
 
